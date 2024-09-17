@@ -21,3 +21,24 @@ def clean_data(path,og_names,new_names):
         return df
     else:
         print('Must have same number of new column names and old column names')
+
+# calculations
+def weight_calcs(x):
+    logs = x.split(',')
+
+    w_list = []
+    v_list = []
+    for i in range(len(logs)):
+        log_i = logs[i].split('x')
+        weight = float(log_i[0])
+        reps = float(log_i[1])
+        vol = weight*reps
+
+        w_list.append(weight)
+        v_list.append(vol)
+    
+    w_max = max(w_list)
+    v_total = sum(v_list)
+   
+    return w_max, v_list, v_total
+

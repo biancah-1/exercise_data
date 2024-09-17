@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 from jefit_data_func import *
 
 # cleaning data for workouts
@@ -22,10 +23,13 @@ dates = df_workouts_filt['Date'].dt.date
 mask = (df_exercise['Date'].dt.date).isin(dates)
 df_exercise_filt = df_exercise[mask]
 
+# filtering to include 5 most common exercises
 ex_counts = df_exercise_filt['Exercise_Name'].value_counts()
 top5_ex_count = ex_counts.head(5).plot(kind='bar')
-plt.show()
-
+#plt.show()
 top5_ex_name = ex_counts.head(5).index.tolist()
+ex_mask = (df_exercise_filt['Exercise_Name']).isin(top5_ex_name)
+df_exercise_top5 = df_exercise_filt[ex_mask]
 
-
+# adding calculated values 
+df_exercise_top5['Weight_Max'],df_exercise_top5['Volume_Sets'], df_exercise_top5['Volume_Total'] = zip(*df_exercise_top5['Exercise_Logs'].apply(weight_calcs))
